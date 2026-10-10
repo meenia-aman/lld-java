@@ -14,7 +14,7 @@ Below are the problems we will design and implement:
 | 01  | **Parking Lot System**                    | Strategy, Factory, Singleton   | Multi-floor slot allocation, dynamic pricing, vehicle types, concurrency          |    Done    |
 | 02  | **Elevator System**                       | State, Strategy, Observer      | Multi-elevator dispatching algorithm (LOOK/SCAN), request scheduling, door states |    Done    |
 | 03  | **Movie Ticket Booking (BookMyShow)**     | Strategy, Facade, Factory      | Concurrent seat locking, time-bound reservation release, payment processing       |    Done    |
-| 04  | **Splitwise (Expense Sharing)**           | Strategy, Composite, Observer  | Split strategies (Exact, Equal, Percentage), debt simplification algorithm        | ⏳ Planned |
+| 04  | **Splitwise (Expense Sharing)**           | Strategy, Composite, Observer  | Split strategies (Exact, Equal, Percentage), debt simplification algorithm        |    Done    |
 | 05  | **Ride-Sharing Service (Uber/Ola)**       | Strategy, Observer, Factory    | Driver-rider matching, surge pricing, trip lifecycle state transitions            | ⏳ Planned |
 | 06  | **E-Commerce & Shopping Cart**            | Decorator, Strategy, State     | Coupon & discount chains, inventory reservation, order state transitions          | ⏳ Planned |
 | 07  | **Notification Service**                  | Observer, Adapter, Factory     | Multi-channel delivery (SMS, Email, Push), rate limits, retry mechanisms          | ⏳ Planned |
