@@ -15,9 +15,9 @@ Below are the problems we will design and implement:
 | 02  | **Elevator System**                       | State, Strategy, Observer      | Multi-elevator dispatching algorithm (LOOK/SCAN), request scheduling, door states |    Done    |
 | 03  | **Movie Ticket Booking (BookMyShow)**     | Strategy, Facade, Factory      | Concurrent seat locking, time-bound reservation release, payment processing       |    Done    |
 | 04  | **Splitwise (Expense Sharing)**           | Strategy, Composite, Observer  | Split strategies (Exact, Equal, Percentage), debt simplification algorithm        |    Done    |
-| 05  | **Ride-Sharing Service (Uber/Ola)**       | Strategy, Observer, Factory    | Driver-rider matching, surge pricing, trip lifecycle state transitions            | ⏳ Planned |
-| 06  | **E-Commerce & Shopping Cart**            | Decorator, Strategy, State     | Coupon & discount chains, inventory reservation, order state transitions          | ⏳ Planned |
-| 07  | **Notification Service**                  | Observer, Adapter, Factory     | Multi-channel delivery (SMS, Email, Push), rate limits, retry mechanisms          | ⏳ Planned |
+| 05  | **Ride-Sharing Service (Uber/Ola)**       | Strategy, Observer, Factory    | Driver-rider matching, surge pricing, trip lifecycle state transitions            |    Done    |
+| 06  | **Notification Service**                  | Observer, Adapter, Factory     | Multi-channel delivery (SMS, Email, Push), rate limits, retry mechanisms          |    Done    |
+| 07  | **E-Commerce & Shopping Cart**            | Decorator, Strategy, State     | Coupon & discount chains, inventory reservation, order state transitions          | ⏳ Planned |
 | 08  | **Chess Game Engine**                     | Command, Factory, Singleton    | Board grid, valid move validation, check/checkmate detection, move history & undo | ⏳ Planned |
 | 09  | **Snake and Ladder Game**                 | Strategy, State                | Configurable board, multiple dice, turn management, winner detection              | ⏳ Planned |
 | 10  | **Food Delivery Service (Swiggy/Zomato)** | Observer, State, Strategy      | Restaurant menu, order fulfillment lifecycle, delivery partner assignment         | ⏳ Planned |
