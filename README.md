@@ -9,20 +9,21 @@ Welcome to the **Low-Level System Design (LLD)** repository! This repository con
 
 Below are the problems we will design and implement:
 
-|  #  | Problem                                   | Key Design Patterns            | Core Concepts & Challenges                                                        |   Status   |
-| :-: | :---------------------------------------- | :----------------------------- | :-------------------------------------------------------------------------------- | :--------: |
-| 01  | **Parking Lot System**                    | Strategy, Factory, Singleton   | Multi-floor slot allocation, dynamic pricing, vehicle types, concurrency          |    Done    |
-| 02  | **Elevator System**                       | State, Strategy, Observer      | Multi-elevator dispatching algorithm (LOOK/SCAN), request scheduling, door states |    Done    |
-| 03  | **Movie Ticket Booking (BookMyShow)**     | Strategy, Facade, Factory      | Concurrent seat locking, time-bound reservation release, payment processing       |    Done    |
-| 04  | **Splitwise (Expense Sharing)**           | Strategy, Composite, Observer  | Split strategies (Exact, Equal, Percentage), debt simplification algorithm        |    Done    |
-| 05  | **Ride-Sharing Service (Uber/Ola)**       | Strategy, Observer, Factory    | Driver-rider matching, surge pricing, trip lifecycle state transitions            |    Done    |
-| 06  | **Notification Service**                  | Observer, Adapter, Factory     | Multi-channel delivery (SMS, Email, Push), rate limits, retry mechanisms          |    Done    |
-| 07  | **E-Commerce & Shopping Cart**            | Decorator, Strategy, State     | Coupon & discount chains, inventory reservation, order state transitions          | ⏳ Planned |
-| 08  | **Chess Game Engine**                     | Command, Factory, Singleton    | Board grid, valid move validation, check/checkmate detection, move history & undo | ⏳ Planned |
-| 09  | **Snake and Ladder Game**                 | Strategy, State                | Configurable board, multiple dice, turn management, winner detection              | ⏳ Planned |
-| 10  | **Food Delivery Service (Swiggy/Zomato)** | Observer, State, Strategy      | Restaurant menu, order fulfillment lifecycle, delivery partner assignment         | ⏳ Planned |
-| 11  | **Vending Machine**                       | State, Chain of Responsibility | State transitions (Ready, Selection, Payment, Dispensing), change return          | ⏳ Planned |
-| 12  | **ATM System**                            | State, Chain of Responsibility | Card authentication, cash withdrawal validation, currency dispenser chain         | ⏳ Planned |
+|  #  | Problem                                   | Key Design Patterns            | Core Concepts & Challenges                                                        |   Status    |
+| :-: | :---------------------------------------- | :----------------------------- | :-------------------------------------------------------------------------------- | :---------: |
+| 01  | **Parking Lot System**                    | Strategy, Factory, Singleton   | Multi-floor slot allocation, dynamic pricing, vehicle types, concurrency          |    Done     |
+| 02  | **Elevator System**                       | State, Strategy, Observer      | Multi-elevator dispatching algorithm (LOOK/SCAN), request scheduling, door states |    Done     |
+| 03  | **Movie Ticket Booking (BookMyShow)**     | Strategy, Facade, Factory      | Concurrent seat locking, time-bound reservation release, payment processing       |    Done     |
+| 04  | **Splitwise (Expense Sharing)**           | Strategy, Composite, Observer  | Split strategies (Exact, Equal, Percentage), debt simplification algorithm        |    Done     |
+| 05  | **Ride-Sharing Service (Uber/Ola)**       | Strategy, Observer, Factory    | Driver-rider matching, surge pricing, trip lifecycle state transitions            |    Done     |
+| 06  | **Notification Service**                  | Observer, Adapter, Factory     | Multi-channel delivery (SMS, Email, Push), rate limits, retry mechanisms          |    Done     |
+| 07  | **E-Commerce & Shopping Cart**            | Decorator, Strategy, State     | Coupon & discount chains, inventory reservation, order state transitions          |    Done     |
+| 08  | **Coupon-Management**                     | Decorator, Strategy, State     | Coupon & discount chains, inventory reservation, order state transitions          | In Progress |
+| 09  | **Chess Game Engine**                     | Command, Factory, Singleton    | Board grid, valid move validation, check/checkmate detection, move history & undo | ⏳ Planned  |
+| 10  | **Snake and Ladder Game**                 | Strategy, State                | Configurable board, multiple dice, turn management, winner detection              | ⏳ Planned  |
+| 11  | **Food Delivery Service (Swiggy/Zomato)** | Observer, State, Strategy      | Restaurant menu, order fulfillment lifecycle, delivery partner assignment         | ⏳ Planned  |
+| 12  | **Vending Machine**                       | State, Chain of Responsibility | State transitions (Ready, Selection, Payment, Dispensing), change return          | ⏳ Planned  |
+| 13  | **ATM System**                            | State, Chain of Responsibility | Card authentication, cash withdrawal validation, currency dispenser chain         | ⏳ Planned  |
 
 ---
 
