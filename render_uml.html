@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Coupon System UML Class Diagram</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 40px;
+      background-color: #ffffff;
+      display: inline-block;
+      min-width: 100%;
+    }
+    .header {
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    h1 {
+      color: #0f172a;
+      font-size: 28px;
+      margin: 0 0 8px 0;
+      font-weight: 800;
+    }
+    p {
+      color: #64748b;
+      font-size: 15px;
+      margin: 0;
+    }
+    #output svg {
+      display: block;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Coupon System — Low Level Design (LLD) Class Diagram</h1>
+    <p>Complete Architecture: Strategy Pattern, Specification Rules, Item Scoping, Stacking &amp; 3-Phase Lifecycle</p>
+  </div>
+  <div id="output">Rendering diagram...</div>
+
+  <script>
+    const diagramDefinition = `
+classDiagram
+    direction TB
+
+    %% ========================================================
+    %% Tier 1: Application Layer & 3-Phase Lifecycle
+    %% ========================================================
+    class CouponService {
+        -couponRepo: CouponRepository
+        -redemptionService: CouponRedemptionService
+        -stackingEngine: StackingEngine
+        +validateAndPreview(code, cart, context) DiscountResult
+        +applyCoupons(codes, cart, context) CartDiscountResult
+        +reserve(orderId, codes, userId) void
+        +commitRedemption(orderId) void
+        +rollbackReservation(orderId) void
+    }
+
+    class CouponRepository {
+        <<interface>>
+        +findByCode(code: String) Optional~Coupon~
+        +save(coupon: Coupon) void
+    }
+
+    class InMemoryCouponRepo {
+        -coupons: Map~String, Coupon~
+        +findByCode(code: String) Optional~Coupon~
+        +save(coupon: Coupon) void
+    }
+    CouponRepository <|.. InMemoryCouponRepo
+
+    class CouponRedemptionService {
+        -redemptionRepo: CouponRedemptionRepository
+        +getUserRedemptionCount(couponId, userId) int
+        +reserve(couponId, userId, orderId, amount) void
+        +redeem(orderId) void
+        +release(orderId) void
+    }
+
+    class CouponRedemptionRepository {
+        <<interface>>
+        +save(redemption: CouponRedemption) void
+        +countByCouponAndUser(couponId, userId, status) int
+        +updateStatus(orderId, status) void
+    }
+
+    class CouponRedemption {
+        -id: String
+        -couponId: String
+        -userId: String
+        -orderId: String
+        -discountAmount: double
+        -status: RedemptionStatus
+        -createdAt: DateTime
+        -expiresAt: DateTime
+    }
+
+    class RedemptionStatus {
+        <<enumeration>>
+        RESERVED
+        REDEEMED
+        CANCELLED
+    }
+
+    CouponService --> CouponRepository
+    CouponService --> CouponRedemptionService
+    CouponRedemptionService --> CouponRedemptionRepository
+    CouponRedemptionRepository ..> CouponRedemption
+    CouponRedemption --> RedemptionStatus
+
+    %% ========================================================
+    %% Tier 2: Coupon Core & Stacking Engine
+    %% ========================================================
+    class Coupon {
+        -id: String
+        -code: String
+        -isActive: boolean
+        -validFrom: DateTime
+        -validTo: DateTime
+        -stackingCategory: StackingCategory
+        -exclusivity: ExclusivityType
+        -itemSelector: ItemSelector
+        -discountStrategy: DiscountStrategy
+        -rules: List~EligibilityRule~
+        +isEligible(cart, context) ValidationResult
+        +calculateDiscount(cart) double
+    }
+
+    class StackingEngine {
+        +canStack(applied: List~Coupon~, candidate: Coupon) boolean
+        +applyStack(coupons, cart, context) CartDiscountResult
+    }
+
+    class StackingCategory {
+        <<enumeration>>
+        ITEM_PROMO
+        CART_COUPON
+        BANK_OFFER
+        SHIPPING
+    }
+
+    class ExclusivityType {
+        <<enumeration>>
+        GLOBAL_EXCLUSIVE
+        CATEGORY_EXCLUSIVE
+        STACKABLE
+    }
+
+    CouponService --> StackingEngine
+    CouponService --> Coupon
+    StackingEngine --> Coupon
+    Coupon --> StackingCategory
+    Coupon --> ExclusivityType
+
+    %% ========================================================
+    %% Tier 3: Selection, Strategy & Eligibility Rules
+    %% ========================================================
+    class ItemSelector {
+        <<interface>>
+        +selectQualifyingItems(cart: Cart) List~CartItem~
+    }
+    class AllItemsSelector {
+        +selectQualifyingItems(cart: Cart) List~CartItem~
+    }
+    class SpecificProductSelector {
+        -allowedProductIds: Set~String~
+        +selectQualifyingItems(cart: Cart) List~CartItem~
+    }
+    class CategorySelector {
+        -targetCategory: ProductCategory
+        +selectQualifyingItems(cart: Cart) List~CartItem~
+    }
+    ItemSelector <|.. AllItemsSelector
+    ItemSelector <|.. SpecificProductSelector
+    ItemSelector <|.. CategorySelector
+    Coupon *-- ItemSelector
+
+    class DiscountStrategy {
+        <<interface>>
+        +calculateDiscount(eligibleAmount: double) double
+    }
+    class FlatDiscountStrategy {
+        -flatAmount: double
+        +calculateDiscount(eligibleAmount: double) double
+    }
+    class PercentageDiscountStrategy {
+        -percentage: double
+        -maxCap: Optional~Double~
+        +calculateDiscount(eligibleAmount: double) double
+    }
+    class BuyXGetYStrategy {
+        -buyQty: int
+        -getQty: int
+        -discountPercentage: double
+        +calculateDiscount(eligibleAmount: double) double
+    }
+    DiscountStrategy <|.. FlatDiscountStrategy
+    DiscountStrategy <|.. PercentageDiscountStrategy
+    DiscountStrategy <|.. BuyXGetYStrategy
+    Coupon *-- DiscountStrategy
+
+    class EligibilityRule {
+        <<interface>>
+        +validate(cart: Cart, context: UserContext) ValidationResult
+    }
+    class MinCartValueRule {
+        -minAmount: double
+        +validate(cart: Cart, context: UserContext) ValidationResult
+    }
+    class FirstTimeUserRule {
+        +validate(cart: Cart, context: UserContext) ValidationResult
+    }
+    class UserUsageLimitRule {
+        -maxPerUser: int
+        -redemptionService: CouponRedemptionService
+        +validate(cart: Cart, context: UserContext) ValidationResult
+    }
+    class PaymentMethodRule {
+        -allowedPaymentModes: Set~PaymentMode~
+        +validate(cart: Cart, context: UserContext) ValidationResult
+    }
+    class ValidationResult {
+        -valid: boolean
+        -errorMessage: String
+        +isValid() boolean
+        +getErrorMessage() String
+    }
+    EligibilityRule <|.. MinCartValueRule
+    EligibilityRule <|.. FirstTimeUserRule
+    EligibilityRule <|.. UserUsageLimitRule
+    EligibilityRule <|.. PaymentMethodRule
+    EligibilityRule ..> ValidationResult
+    Coupon *-- EligibilityRule
+
+    %% ========================================================
+    %% Tier 4: Cart & User Context Domain Models
+    %% ========================================================
+    class Cart {
+        -id: String
+        -userId: String
+        -items: List~CartItem~
+        +getTotalAmount() double
+        +getItems() List~CartItem~
+    }
+    class CartItem {
+        -productId: String
+        -category: ProductCategory
+        -unitPrice: double
+        -quantity: int
+        -discountAmount: double
+        +getOriginalTotal() double
+        +getFinalPrice() double
+    }
+    class ProductCategory {
+        <<enumeration>>
+        ELECTRONICS
+        FASHION
+        GROCERY
+        DAIRY_ESSENTIALS
+    }
+    class UserContext {
+        -userId: String
+        -isFirstOrder: boolean
+        -orderCount: int
+        -selectedPaymentMode: PaymentMode
+    }
+    class PaymentMode {
+        <<enumeration>>
+        CREDIT_CARD_HDFC
+        UPI
+        NET_BANKING
+        CASH_ON_DELIVERY
+    }
+
+    ItemSelector ..> Cart
+    EligibilityRule ..> Cart
+    EligibilityRule ..> UserContext
+    Cart *-- CartItem
+    CartItem --> ProductCategory
+    UserContext --> PaymentMode
+`;
+
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'default',
+      themeVariables: {
+        fontSize: '14px',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        primaryColor: '#eff6ff',
+        primaryBorderColor: '#2563eb',
+        primaryTextColor: '#1e3a8a',
+        lineColor: '#64748b',
+        secondaryColor: '#faf5ff',
+        tertiaryColor: '#f0fdf4'
+      }
+    });
+
+    window.onload = async () => {
+      try {
+        const { svg } = await mermaid.render('mermaidSvg', diagramDefinition);
+        const output = document.getElementById('output');
+        output.innerHTML = svg;
+        const renderedSvg = output.querySelector('svg');
+        const vb = renderedSvg.getAttribute('viewBox').split(' ');
+        const vbWidth = Math.ceil(parseFloat(vb[2]));
+        const vbHeight = Math.ceil(parseFloat(vb[3]));
+        renderedSvg.style.width = vbWidth + 'px';
+        renderedSvg.style.height = vbHeight + 'px';
+        window.renderedDims = { width: vbWidth, height: vbHeight };
+        window.renderStatus = "SUCCESS";
+      } catch (err) {
+        document.getElementById('output').innerText = "Render error: " + err;
+        window.renderStatus = "ERROR: " + err;
+      }
+    };
+  </script>
+</body>
+</html>
